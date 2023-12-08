@@ -3,6 +3,7 @@
 namespace DbBackup;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class BackupManager
@@ -18,7 +19,7 @@ class BackupManager
 
             return $backupFileName;
         } catch (\Exception $e) {
-            \Log::error('Error creating backup: ' . $e->getMessage());
+            Log::error('Error creating backup: ' . $e->getMessage());
 
             return null;
         }
@@ -37,7 +38,7 @@ class BackupManager
                 Storage::delete($oldestBackups);
             }
         } catch (\Exception $e) {
-            \Log::error('Error deleting old backups: ' . $e->getMessage());
+            Log::error('Error deleting old backups: ' . $e->getMessage());
         }
     }
 
@@ -59,9 +60,9 @@ class BackupManager
 
             exec($command);
         } catch (\PDOException $e) {
-            \Log::error('Database connection error during backup: ' . $e->getMessage());
+            Log::error('Database connection error during backup: ' . $e->getMessage());
         } catch (\Exception $e) {
-            \Log::error('Error executing backup: ' . $e->getMessage());
+            Log::error('Error executing backup: ' . $e->getMessage());
         }
     }
 }
